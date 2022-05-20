@@ -9,7 +9,7 @@ import { BrowserRouter, Route } from "react-router-dom";
 
 import { useSelector,useDispatch } from "react-redux";
 
-import ThemeReducer from "../../redux/reducers/ThemeReducer";
+
 
 import ThemeAction from '../../redux/actions/ThemeActions'
 
