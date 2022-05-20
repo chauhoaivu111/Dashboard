@@ -1,6 +1,7 @@
 import React from 'react'
 import './TopNav.scss'
 import DropDown from '../dropdown/DropDown'
+import ThemeMenu from '../thememenu/ThemeMenu'
 import { Link } from 'react-router-dom'
 
 import notifications from '../../assets/JsonData/notification.json';
@@ -88,6 +89,7 @@ const TopNav = () => {
         </div>
         <div className="topnav__right-item">
           {/* theme setting */}
+          <ThemeMenu/>
           
          
         </div>

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 
 import statusCards from '../assets/JsonData/status-card-data.json';
 import StatusCard from '../components/statuscard/StatusCard';
@@ -7,6 +7,9 @@ import { Link } from 'react-router-dom';
 
 import Table from '../components/table/Table';
 import Badge from '../components/badge/Badge';
+
+import { useSelector,useDispatch } from 'react-redux';
+import ThemeAction from '../redux/actions/ThemeActions'
 
 const ChartOptions = {
   series: [
@@ -177,6 +180,9 @@ const renderOrderBody=(item,index) => (
 
 const Dashboard = () => {
 
+  const themeReducer = useSelector(state => state.ThemeReducer.mode)
+
+  
 
   return (
     <div>
@@ -205,7 +211,15 @@ const Dashboard = () => {
           <div className='card full-height'>
             {/* {chart} */}
             <Chart
-              options={ChartOptions.options}
+              options={themeReducer === 'theme-mode-dark' ?{
+                ...ChartOptions.options,
+                theme:{mode:"dark"}
+              }: {
+
+                ...ChartOptions.options,
+                theme:{mode:"light"}
+
+              } }
               series={ChartOptions.series}
               type='line'
               height='100%'
