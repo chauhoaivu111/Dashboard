@@ -1,0 +1,181 @@
+import React, { useEffect, useRef, useState } from "react";
+
+// import "./ThemeMenu.scss";
+import { useDispatch } from "react-redux";
+import ThemeAction from '../../redux/actions/ThemeActions'
+import './Dashboard.scss'
+// color container left and right
+const mode_settings = [
+  {
+    id: "light",
+    name: "Light",
+    background: "light-background",
+    class: "theme-mode-light",
+  },
+];
+
+const mode_settings1 = [
+  {
+    id: "dark",
+    name: "Dark",
+    background: "dark-background",
+    class: "theme-mode-dark",
+  },
+];
+
+// color theme button left container
+const color_settings = [
+  {
+    id: "blue",
+    name: "Blue",
+    background: "blue-color",
+    class: "theme-color-blue",
+  },
+  {
+    id: "red",
+    name: "Red",
+    background: "red-color",
+    class: "theme-color-red",
+  },
+  {
+    id: "cyan",
+    name: "Cyan",
+    background: "cyan-color",
+    class: "theme-color-cyan",
+  },
+  {
+    id: "green",
+    name: "Green",
+    background: "green-color",
+    class: "theme-color-green",
+  },
+  {
+    id: "orange",
+    name: "Orange",
+    background: "orange-color",
+    class: "theme-color-orange",
+  },
+];
+
+const clickOutsideRef = (content_ref, toggle_ref) => {
+  document.addEventListener("mousedown", (e) => {
+    // user click toggle
+    if (toggle_ref.current && toggle_ref.current.contains(e.target)) {
+      content_ref.current.classList.toggle("active");
+    } else {
+      // user click outside toggle and content
+      if (content_ref.current && !content_ref.current.contains(e.target)) {
+        content_ref.current.classList.remove("active");
+      }
+    }
+  });
+};
+
+const Dashboard = () => {
+  const [show, setShow] = useState(true);
+  const container = React.useRef(null);
+
+  const handleClick = () => {
+    setShow(!show);
+  };
+  const menu_ref = useRef(null);
+  const menu_toggle_ref = useRef(null);
+
+  clickOutsideRef(menu_ref, menu_toggle_ref);
+
+  const closeMenu = () => menu_ref.current.classList.remove("active");
+
+  const setActiveMenu = () => menu_ref.current.classList.add("active");
+
+  const [currMode, setCurrMode] = useState("light");
+  const [currColor, setCurrColor] = useState("blue");
+
+  const dispatch = useDispatch();
+
+  const setMode = (mode) => {
+    setCurrMode(mode.id);
+    localStorage.setItem("themeMode", mode.class);
+    dispatch(ThemeAction.setMode(mode.class));
+  };
+
+  const setColor = (color) => {
+    setCurrColor(color.id);
+    localStorage.setItem("themeMode", color.class);
+    dispatch(ThemeAction.setColor(color.class));
+  };
+
+  useEffect(() => {
+    const themeClass = mode_settings.find(
+      (e) => e.class === localStorage.getItem("themeMode", "theme-mode-light")
+    );
+    const themeClass1 = mode_settings1.find(
+      (e) => e.class === localStorage.getItem("themeMode", "theme-mode-light")
+    );
+
+    const colorClass = mode_settings.find(
+      (e) => e.class === localStorage.getItem("colorMode", "theme-mode-light")
+    );
+
+    if (themeClass !== undefined) setCurrMode(themeClass.id);
+    if (themeClass1 !== undefined) setCurrMode(themeClass1.id);
+    if (colorClass !== undefined) setCurrColor(colorClass.id);
+  }, []);
+
+  return (
+    <div>
+      
+
+      <div className="flow-sigup__content__textfieldss">
+        <div className="stylea">
+          <div onClick={() => handleClick()}>
+            {show ? (
+              <ul className="mode-list">
+                {mode_settings1.map((item, index) => (
+                  <button
+                    key={index}
+                    style={{ backgroundColor: "transparent", outline: "0" }}
+                    onClick={() => setMode(item)}
+                  >
+                    <i class="bx bx-moon" style ={{fontSize:"2rem"}}></i>
+                  </button>
+                ))}
+              </ul>
+            ) : (
+              <ul className="mode-list">
+                {mode_settings.map((item, index) => (
+                  <button
+                    key={index}
+                    style={{ backgroundColor: "transparent", outline: "0" }}
+                    onClick={() => setMode(item)}
+                  >
+                    <i class="bx bxs-moon" style ={{fontSize:"2rem"}}></i>
+                  </button>
+                ))}
+              </ul>
+            )}
+          </div>
+        </div>
+      </div>
+
+      <div className="theme-menu__select">
+                    <span>Choose color</span>
+                    <ul className="mode-list">
+                        {
+                            color_settings.map((item, index) => (
+                                <li key={index} onClick={() =>setColor(item)} >
+                                    <div className={`mode-list__color ${item.background} ${item.id === currColor ? "active" : ''} `}>
+                                        <i className='bx bx-check' ></i>
+                                    </div>
+                                
+                                </li>
+                            ))
+                        }
+                    </ul>
+                </div>
+
+    
+    </div>
+  );
+};
+
+export default Dashboard;

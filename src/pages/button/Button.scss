@@ -1,0 +1,14 @@
+
+
+.button_theme:hover{
+    border-radius: var(--border-radius);
+    // create backgound when router
+    background-image: linear-gradient(
+        to right,
+        var(--main-color),
+        var(--second-color)
+    ) ;
+
+    color: var(--txt-white);
+    
+}
